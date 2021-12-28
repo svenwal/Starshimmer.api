@@ -1,0 +1,2 @@
+# Starshimmer.api
+Starshimmer API
