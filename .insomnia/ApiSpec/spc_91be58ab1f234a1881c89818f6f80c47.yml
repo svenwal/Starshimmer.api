@@ -1,0 +1,61 @@
+_id: spc_91be58ab1f234a1881c89818f6f80c47
+type: ApiSpec
+parentId: wrk_5d06f39768e6459183252c1f9d0f9dc3
+modified: 1640718608165
+created: 1640717673992
+fileName: Starshimmer.yaml
+contents: |
+  openapi: 3.0.0
+  info:
+    contact:
+      email: sven@svenwal.de
+      url: https://svenwal.de
+      name: Sven Walther
+    description: Creatures by Starshimmer
+    title: Starshimmer API
+    version: 1.0.0
+  servers:
+    - url: https://api.gepardenstern.de
+    - url: https://api.starshimmer.de
+  tags:
+    - description: Starshimmer creatures
+      name: Starshimmer API
+  paths:
+    /dragons:
+      get:
+        responses:
+          "200":
+            description: List of creatures
+        summary: A filterable list of all creatures
+    /dragons/{id}:
+      get:
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: string
+            description: The id of the creature
+        responses:
+          "200":
+            description: A specfic creatures
+        summary: Return a specific creature
+  components:
+    schemas:
+      creature:
+        type: object
+        properties:
+          bark:
+            type: boolean
+          breed:
+            type: string
+            enum: [Dingo, Husky, Retriever, Shepherd]
+
+      Cat:
+        type: object
+        properties:
+          hunts:
+            type: boolean
+          age:
+            type: integer
+contentType: yaml
