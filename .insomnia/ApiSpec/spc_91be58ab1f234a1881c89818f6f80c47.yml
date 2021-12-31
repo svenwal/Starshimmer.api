@@ -1,33 +1,105 @@
 _id: spc_91be58ab1f234a1881c89818f6f80c47
 type: ApiSpec
 parentId: wrk_5d06f39768e6459183252c1f9d0f9dc3
-modified: 1640718608165
+modified: 1640962070557
 created: 1640717673992
 fileName: Starshimmer.yaml
-contents: |
+contents: |-
   openapi: 3.0.0
   info:
     contact:
       email: sven@svenwal.de
       url: https://svenwal.de
       name: Sven Walther
-    description: Creatures by Starshimmer
+    description: Dragons by Starshimmer
     title: Starshimmer API
-    version: 1.0.0
+    version: 1.2.0
   servers:
-    - url: https://api.gepardenstern.de
     - url: https://api.starshimmer.de
+    - url: https://api.gepardenstern.de
   tags:
-    - description: Starshimmer creatures
+    - description: Starshimmer dragons
       name: Starshimmer API
   paths:
-    /dragons:
+    /:
       get:
+        parameters:
+          - name: affiliation
+            in: query
+            description: Filter by affiliation
+            required: false
+            schema:
+              type: string
+          - name: alive
+            in: query
+            description: Filter being alive or dead
+            required: false
+            schema:
+              type: boolean
+          - name: gender
+            in: query
+            description: Filter by gender
+            required: false
+            schema:
+              type: string
+              enum:
+                - female
+                - male
+          - name: name
+            in: query
+            description: Filter by name
+            required: false
+            schema:
+              type: string
+          - name: occupation
+            in: query
+            description: Filter by occupation
+            required: false
+            schema:
+              type: string
+          - name: position
+            in: query
+            description: Filter by position
+            required: false
+            schema:
+              type: string
+          - name: species
+            in: query
+            description: Filter by species
+            required: false
+            schema:
+              type: string
         responses:
           "200":
-            description: List of creatures
-        summary: A filterable list of all creatures
-    /dragons/{id}:
+            description: List of dragons
+            content:
+              application/json:    
+                schema:
+                  $ref: "#/components/schemas/Dragons"
+        tags:
+          - Starshimmer API
+          - Get
+        summary: A filterable list of all dragons
+      post:
+        security:
+          - ApiKeyAuth: []
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dragon'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Dragon'
+        responses:
+          "200":
+            description: The created dragon
+        tags:
+          - Starshimmer API
+          - Create
+        summary: Create a dragon
+    /{id}:
       get:
         parameters:
           - in: path
@@ -35,27 +107,126 @@ contents: |
             required: true
             schema:
               type: string
-            description: The id of the creature
+            description: The id of the dragon
         responses:
           "200":
-            description: A specfic creatures
-        summary: Return a specific creature
+            description: A specfic dragon
+            content:
+              application/json:    
+                schema:
+                  $ref: "#/components/schemas/Dragon"
+        tags:
+          - Starshimmer API
+          - Get
+        summary: Return a specific dragon
+      delete:
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: string
+            description: The id of the dragon
+        security:
+          - ApiKeyAuth: []
+        responses:
+          "200":
+            description: Dragon has been deleted
+        tags:
+          - Starshimmer API
+        summary: Delete a dragon
+      patch:
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: string
+            description: The id of the dragon
+        security:
+          - ApiKeyAuth: []
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dragon'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Dragon'
+        responses:
+          "200":
+            description: The updated dragon
+            content:
+              application/json:    
+                schema:
+                  $ref: "#/components/schemas/Dragon"
+        tags:
+          - Starshimmer API
+          - Change
+        summary: Change a dragon
+      put:
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: string
+            description: The id of the dragon
+        security:
+          - ApiKeyAuth: []
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dragon'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Dragon'
+        responses:
+          "200":
+            description: The updated dragon
+            content:
+              application/json:    
+                schema:
+                  $ref: "#/components/schemas/Dragon"
+        tags:
+          - Starshimmer API
+          - Change
+        summary: Change a dragon
+
   components:
     schemas:
-      creature:
+      Dragons:
+        type: array
+        items:
+          $ref: '#/components/schemas/Dragon'
+      Dragon:
         type: object
         properties:
-          bark:
-            type: boolean
-          breed:
-            type: string
-            enum: [Dingo, Husky, Retriever, Shepherd]
-
-      Cat:
-        type: object
-        properties:
-          hunts:
-            type: boolean
-          age:
+          id:
             type: integer
+          affiliation:
+            type: string
+          alive:
+            type: boolean
+          gender:
+            type: string
+            enum: [male, female]
+          name:
+            type: string
+          occupation:
+            type: string
+          position:
+            type: string
+          species:
+            type: string
+    securitySchemes:
+      ApiKeyAuth:        
+        type: apiKey
+        in: header       
+        name: apikey 
+  security:
+    - ApiKeyAuth: [] 
 contentType: yaml
