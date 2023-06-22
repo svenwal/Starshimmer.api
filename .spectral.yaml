@@ -2,4 +2,4 @@ given: "$.info.version"
 then:
   function: pattern
   functionOptions:
-    match: "^[0-9]\.$[0-9]\.[0-9]\.[0-9]"
+    match: "^[0-9]\.[0-9]\.[0-9]\.[0-9]$"
