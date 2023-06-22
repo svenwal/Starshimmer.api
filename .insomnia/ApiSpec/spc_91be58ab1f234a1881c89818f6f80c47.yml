@@ -1,7 +1,7 @@
 _id: spc_91be58ab1f234a1881c89818f6f80c47
 type: ApiSpec
 parentId: wrk_5d06f39768e6459183252c1f9d0f9dc3
-modified: 1641454568388
+modified: 1687414765144
 created: 1640717673992
 fileName: Starshimmer.yaml
 contents: |-
@@ -20,9 +20,17 @@ contents: |-
   tags:
     - description: Starshimmer dragons
       name: Starshimmer API
+    - name: Get
+      description: fetch dragon(s)
+    - name: Create
+      description: Add dragon
+    - name: Change
+      description: Change a dragon
   paths:
     /:
       get:
+        description: Get all dragons
+        operationId: getAllDragons
         parameters:
           - name: affiliation
             in: query
@@ -81,6 +89,8 @@ contents: |-
           - Get
         summary: A filterable list of all dragons
       post:
+        description: Add a dragon
+        operationId: addDragon
         security:
           - ApiKeyAuth: []
         requestBody:
@@ -101,6 +111,8 @@ contents: |-
         summary: Create a dragon
     /{id}:
       get:
+        description: Get one dragon
+        operationId: get1Dragon
         parameters:
           - in: path
             name: id
@@ -120,6 +132,8 @@ contents: |-
           - Get
         summary: Return a specific dragon
       delete:
+        description: Remove a dragon
+        operationId: removeADragon
         parameters:
           - in: path
             name: id
@@ -136,6 +150,8 @@ contents: |-
           - Starshimmer API
         summary: Delete a dragon
       patch:
+        description: Change dragon
+        operationId: changeDragon
         parameters:
           - in: path
             name: id
@@ -166,6 +182,8 @@ contents: |-
           - Change
         summary: Change a dragon
       put:
+        description: Replace dragon
+        operationId: replaceDragon
         parameters:
           - in: path
             name: id
